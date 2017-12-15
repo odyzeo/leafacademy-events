@@ -1,0 +1,161 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-12-15 22:53+0100\n"
+"PO-Revision-Date: 2017-12-15 22:52+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: bower_components\n"
+"X-Poedit-SearchPathExcluded-1: node_modules\n"
+
+#: lib/LA_Events_Core.php:31 lib/LA_Events_Core.php:33
+#: lib/LA_Events_Core.php:61
+msgid "Events"
+msgstr ""
+
+#: lib/LA_Events_Core.php:32 lib/LA_Events_Core.php:34
+#: lib/LA_Events_Core.php:60
+msgid "Event"
+msgstr ""
+
+#: lib/LA_Events_Core.php:35
+msgid "Event Archives"
+msgstr ""
+
+#: lib/LA_Events_Core.php:36
+msgid "Event Attributes"
+msgstr ""
+
+#: lib/LA_Events_Core.php:37
+msgid "Parent Event:"
+msgstr ""
+
+#: lib/LA_Events_Core.php:38
+msgid "All Events"
+msgstr ""
+
+#: lib/LA_Events_Core.php:39
+msgid "Add New Event"
+msgstr ""
+
+#: lib/LA_Events_Core.php:40
+msgid "Add New"
+msgstr ""
+
+#: lib/LA_Events_Core.php:41
+msgid "New Event"
+msgstr ""
+
+#: lib/LA_Events_Core.php:42
+msgid "Edit Event"
+msgstr ""
+
+#: lib/LA_Events_Core.php:43
+msgid "Update Event"
+msgstr ""
+
+#: lib/LA_Events_Core.php:44
+msgid "View Event"
+msgstr ""
+
+#: lib/LA_Events_Core.php:45
+msgid "View Events"
+msgstr ""
+
+#: lib/LA_Events_Core.php:46
+msgid "Search Event"
+msgstr ""
+
+#: lib/LA_Events_Core.php:47
+msgid "Not found"
+msgstr ""
+
+#: lib/LA_Events_Core.php:48
+msgid "Not found in Trash"
+msgstr ""
+
+#: lib/LA_Events_Core.php:49
+msgid "Featured Image"
+msgstr ""
+
+#: lib/LA_Events_Core.php:50
+msgid "Set featured image"
+msgstr ""
+
+#: lib/LA_Events_Core.php:51
+msgid "Remove featured image"
+msgstr ""
+
+#: lib/LA_Events_Core.php:52
+msgid "Use as featured image"
+msgstr ""
+
+#: lib/LA_Events_Core.php:53
+msgid "Insert into Event"
+msgstr ""
+
+#: lib/LA_Events_Core.php:54
+msgid "Uploaded to this Event"
+msgstr ""
+
+#: lib/LA_Events_Core.php:55
+msgid "Events list"
+msgstr ""
+
+#: lib/LA_Events_Core.php:56
+msgid "Events list navigation"
+msgstr ""
+
+#: lib/LA_Events_Core.php:57
+msgid "Filter Events list"
+msgstr ""
+
+#: lib/LA_Events_Core.php:92
+msgid "Search Categories"
+msgstr ""
+
+#: lib/LA_Events_Core.php:93
+msgid "All Categories"
+msgstr ""
+
+#: lib/LA_Events_Core.php:94
+msgid "Parent Category"
+msgstr ""
+
+#: lib/LA_Events_Core.php:95
+msgid "Parent Category:"
+msgstr ""
+
+#: lib/LA_Events_Core.php:96
+msgid "Edit Category"
+msgstr ""
+
+#: lib/LA_Events_Core.php:97
+msgid "Update Category"
+msgstr ""
+
+#: lib/LA_Events_Core.php:98
+msgid "Add New Category"
+msgstr ""
+
+#: lib/LA_Events_Core.php:99
+msgid "New Category Name"
+msgstr ""
+
+#: lib/LA_Events_Core.php:100
+msgid "Category"
+msgstr ""
+
+#: lib/LA_Events_Shortcodes.php:58
+msgid "Please select category"
+msgstr ""

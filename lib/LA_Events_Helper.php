@@ -10,13 +10,24 @@ class LA_Events_Helper {
 	/**
 	 * Build query for events WP Query
 	 *
+	 * @param array $metaQuery WP_Query meta_query array
+	 * @param array $taxQuery WP_Query tax_query array
+	 *
 	 * @return array Array of WP_Post objects
 	 */
-	public static function buildEventsQuery() {
+	public static function buildEventsQuery($metaQuery = array(), $taxQuery = array()) {
 
 		$queryArgs = array(
 			'post_type' => LA_Events_Core::EVENT_POST_TYPE
 		);
+
+		if (!empty($metaQuery)) {
+			$queryArgs['meta_query'] = $metaQuery;
+		}
+
+		if (!empty($taxQuery)) {
+			$queryArgs['tax_query'] = $taxQuery;
+		}
 
 		$queryPosts = new WP_Query($queryArgs);
 
@@ -107,6 +118,33 @@ class LA_Events_Helper {
 
 		return $calendarObject;
 
+	}
+
+	/**
+	 * Get all event categories
+	 *
+	 * @return array Array with categories
+	 */
+	public static function getEventsCategories() {
+
+		$categories = get_terms(array(
+			'taxonomy' => LA_Events_Core::EVENT_POST_TYPE_CATEGORY,
+			'hide_empty' => FALSE
+		));
+
+		$categoriesObject = array();
+
+		if (!empty($categories)) {
+			foreach ($categories as $category) {
+				array_push($categoriesObject, array(
+					'ID' => $category->term_id,
+					'name' => $category->name,
+					'slug' => $category->slug
+				));
+			}
+		}
+
+		return $categoriesObject;
 	}
 
 }

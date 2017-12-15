@@ -21,7 +21,7 @@ class LA_Events_REST {
 	 */
 	public static function registerRestApiEndpoints() {
 
-		register_rest_route('la-events-calendar/v1', '/event/intStart=(?P<intStart>\d+)&intEnd=(?P<intEnd>\d+)', array(
+		register_rest_route('la-events-calendar/v1', '/event/intStart=(?P<intStart>\d+)&intEnd=(?P<intEnd>\d+)&category=(?P<category>\d+)', array(
 			'methods' => 'GET',
 			'callback' => array(__CLASS__, 'getEventsEndpoint')
 		));
@@ -39,19 +39,34 @@ class LA_Events_REST {
 
 		$startInterval = $data['intStart'];
 		$endInterval = $data['intEnd'];
+		$category = $data['category'];
 
 		$startIntervalDate = date('Y-m-d', $startInterval);
 		$endIntervalDate = date('Y-m-d', $endInterval);
 
+		$category = intval($category);
+
+		$taxQuery = array();
+		if ($category !== 0) {
+			$taxQuery = array(
+				array(
+					'taxonomy' => LA_Events_Core::EVENT_POST_TYPE_CATEGORY,
+					'field' => 'term_id',
+					'terms' => $category
+				)
+			);
+		}
+
 		$metaQuery = array(
-			'key' => LA_Events_ACF::EVENT_DATE_FIELD,
-			'value' => array($startIntervalDate, $endIntervalDate),
-			'compare' => 'BETWEEN',
-			'type' => 'DATE'
+			array(
+				'key' => LA_Events_ACF::EVENT_DATE_FIELD,
+				'value' => array($startIntervalDate, $endIntervalDate),
+				'compare' => 'BETWEEN',
+				'type' => 'DATE'
+			)
 		);
 
-
-		$events = LA_Events_Helper::buildEventsQuery($metaQuery);
+		$events = LA_Events_Helper::buildEventsQuery($metaQuery, $taxQuery);
 		$eventsObject = LA_Events_Helper::buildEventsObject($events);
 		$calendarObject = LA_Events_Helper::convertEventsObjectIntoCalendarObject($eventsObject);
 
