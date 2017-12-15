@@ -2,11 +2,27 @@
 
 ## Intro
 
-TBA
+Plugin providing events calendar with categories.
+
+## How to install
+ 
+After downloading, run buildscript with command
+
+```
+npm install
+```
+
+Plugin have watching tasks to watch if scss, css or js files are changing. To run this task, run command
+
+```
+gulp default
+```
  
 ## Shortcodes provided with plugin
 
 **[la-events-calendar]**
+
+Major shortcode to show events calendar.
 
 ## Packages 
 
