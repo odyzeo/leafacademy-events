@@ -1,0 +1,32 @@
+{
+  "name": "la-events-calendar",
+  "description": "TBA",
+  "main": "index.js",
+  "authors": [
+    "Dev Studio spol. s r.o."
+  ],
+  "license": "ISC",
+  "keywords": [
+    "leaf",
+    "academy",
+    "calendar",
+    "events",
+    "event",
+    "CPT",
+    "post",
+    "type",
+    "wordpress",
+    "wp"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fullcalendar": "^3.7.0"
+  }
+}
