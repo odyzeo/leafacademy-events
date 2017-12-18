@@ -22,11 +22,45 @@ jQuery.noConflict();
 
 						}
 					},
-					eventClick: function(calEvent, jsEvent, view) {
+					eventClick: function(event, jsEvent, view) {
 
-						var eventName = calEvent.title;
+						var currentView = view.name;
 
-						alert(eventName);
+						if (currentView == 'listMonth') {
+
+							var isEventAllDay = event.allDay;
+							var eventTitle = event.title;
+							var eventDate = getEventDate(event.start._i);
+
+							var alertTitle = eventDate + ' ' + eventTitle;
+
+							if (isEventAllDay) {
+								alertTitle = eventTitle;
+							}
+
+							alert(alertTitle);
+
+						}
+
+					},
+					eventRender: function(event, element, view) {
+
+						var currentView = view.name;
+
+						var isEventAllDay = event.allDay;
+
+						if (currentView == 'month') {
+
+							var eventTimeFormatted = getEventDate(event.start._i);
+
+							var eventHtml = '<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end tippy" data-tippy-arrow="true" data-tippy-animation="shift-toward" data-tippy-duration="[600,300]" title="' + eventTimeFormatted + ' ' + event.title + '"><div class="fc-content"><span class="fc-time">' + eventTimeFormatted + '</span> <span class="fc-title">' + event.title + '</span></div></a>';
+
+							if (isEventAllDay) {
+								eventHtml = '<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end tippy" data-tippy-arrow="true" data-tippy-animation="shift-toward" data-tippy-duration="[600,300]" title="' + event.title + '"><div class="fc-content"><span class="fc-title">' + event.title + '</span></div></a>';
+							}
+
+							return $(eventHtml)
+						}
 
 					}
 				});
@@ -34,6 +68,20 @@ jQuery.noConflict();
 				onCalendarRender(calendar);
 				onCategoryChange('select[name="event_category"]', calendar);
 				onCategoryListSelect('ul#event_category li', calendar);
+
+				$(window).on('resize orientationChange', function(event) {
+					checkViewPort(calendar);
+				});
+
+			};
+
+			var getEventDate = function(eventStart) {
+
+				var eventTimeOffset = moment(eventStart).utcOffset();
+				var eventTime = moment(eventStart).subtract(eventTimeOffset, 'm');
+				var eventTimeFormatted = eventTime.format('HH:mm');
+
+				return eventTimeFormatted;
 
 			};
 
@@ -94,15 +142,22 @@ jQuery.noConflict();
 
 			};
 
-			var onCalendarRender = function(calendar) {
-
+			var checkViewPort = function(calendar) {
 				var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
 				if (viewportWidth <= 768) {
 
-					console.log('changingView');
 					switchCalendarView(calendar, 'listMonth');
 				}
+
+				else {
+					switchCalendarView(calendar, 'month');
+				}
+			};
+
+			var onCalendarRender = function(calendar) {
+
+				checkViewPort(calendar);
 
 				updateViewInformations(calendar);
 
@@ -148,6 +203,7 @@ jQuery.noConflict();
 					success: function(data) {
 
 						updateEvents(calendar, data.events);
+						tippy('a.tippy');
 					}
 				});
 

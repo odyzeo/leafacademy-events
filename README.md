@@ -30,8 +30,14 @@ Major shortcode to show events calendar.
 - [Flexbox Grid](http://flexboxgrid.com/)
 - [jQuery LoadingOverlay](https://github.com/gasparesganga/jquery-loading-overlay)
 - [Moment](https://momentjs.com/)
+- [tippy.js](https://atomiks.github.io/tippyjs/)
 
 ## Changelog
+
+**1.0.2**
+
+- added tippy.js to show popup under event
+- added dynamic calendar style change based on viewport
 
 **1.0.1**
 

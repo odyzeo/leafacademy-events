@@ -88,7 +88,8 @@ class LA_Events_Shortcodes {
 			wp_enqueue_script('fullcalendar-js', plugins_url('/js/fullcalendar.min.js', LA_EVENTS_INDEX), array('moment-with-locales-js'), '1.0.0', FALSE);
 			wp_enqueue_script('loadingoverlay-js', plugins_url('/js/loadingoverlay.min.js', LA_EVENTS_INDEX), array('fullcalendar-js'), '1.0.0', FALSE);
 			wp_enqueue_script('loadingoverlay-js-extra', plugins_url('/js/loadingoverlay_progress.min.js', LA_EVENTS_INDEX), array('fullcalendar-js'), '1.0.0', FALSE);
-			wp_enqueue_script('la-events-calendar-js', plugins_url('/js/la-events-calendar.min.js', LA_EVENTS_INDEX), array('loadingoverlay-js'), '1.0.0', FALSE);
+			wp_enqueue_script('tippy-js', plugins_url('/js/tippy.all.min.js', LA_EVENTS_INDEX), array('loadingoverlay-js-extra'), '1.0.0', FALSE);
+			wp_enqueue_script('la-events-calendar-js', plugins_url('/js/la-events-calendar.min.js', LA_EVENTS_INDEX), array('tippy-js'), '1.0.1', FALSE);
 			wp_localize_script('la-events-calendar-js', 'LA_Events', array(
 				'rest_url' => rest_url()
 			));
