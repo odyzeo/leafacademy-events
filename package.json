@@ -1,6 +1,6 @@
 {
   "name": "la-events-calendar",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "TBA",
   "main": "index.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "gulp-watch": "^4.3.11",
+    "pump": "^2.0.0",
     "tippy.js": "^2.0.8",
     "tooltip.js": "^1.1.7"
   }

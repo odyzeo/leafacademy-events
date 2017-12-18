@@ -34,6 +34,10 @@ Major shortcode to show events calendar.
 
 ## Changelog
 
+**1.0.3**
+
+- used gulp pump instead of pipe in gulpfile
+
 **1.0.2**
 
 - added tippy.js to show popup under event
