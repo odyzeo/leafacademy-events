@@ -41,6 +41,8 @@ class LA_Events_Helper {
 	 * @param array $posts Array with WP_Post objects
 	 *
 	 * @return array|bool Array of events objects, or false if initial array was empty
+	 *
+	 * @since 1.0.1 Parameters for all-day events added
 	 */
 	public static function buildEventsObject($posts = array()) {
 
@@ -53,7 +55,13 @@ class LA_Events_Helper {
 		foreach ($posts as $post) {
 
 			$eventId = $post->ID;
-			$eventDate = get_field(LA_Events_ACF::EVENT_DATE_FIELD, $eventId);
+			$eventDate = get_field(LA_Events_ACF::EVENT_DATE_TIME_FIELD, $eventId);
+			$eventAllDay = get_field(LA_Events_ACF::EVENT_ALL_DAY_FIELD, $eventId);
+
+			if ($eventAllDay) {
+				$eventDate = get_field(LA_Events_ACF::EVENT_DATE_FIELD, $eventId);
+			}
+
 			$eventStringDate = self::getStrToTimeEventDate($eventId);
 
 			array_push($eventsObject, array(
@@ -61,7 +69,8 @@ class LA_Events_Helper {
 				'title' => $post->post_title,
 				'content' => $post->post_content,
 				'event_date' => $eventDate,
-				'event_date_timestamp' => $eventStringDate
+				'event_date_timestamp' => $eventStringDate,
+				'all_day' => $eventAllDay
 			));
 		}
 
@@ -75,6 +84,7 @@ class LA_Events_Helper {
 	 * @param int $eventId Event ID
 	 *
 	 * @return bool|int Timestamp for event date, or false if event ID is zero
+	 *
 	 */
 	public static function getStrToTimeEventDate($eventId = 0) {
 
@@ -98,6 +108,8 @@ class LA_Events_Helper {
 	 * @param array $eventsObject Array with events
 	 *
 	 * @return array|bool Array with events formatted into calendar request, or false if events object is empty
+	 *
+	 * @since 1.0.1 Added all-day parameter to convert from event object
 	 */
 	public static function convertEventsObjectIntoCalendarObject($eventsObject = array()) {
 
@@ -111,7 +123,8 @@ class LA_Events_Helper {
 
 			array_push($calendarObject, array(
 				'title' => $eventObject['title'],
-				'start' => $eventObject['event_date']
+				'start' => $eventObject['event_date'],
+				'allDay' => $eventObject['all_day']
 			));
 
 		}

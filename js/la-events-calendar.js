@@ -6,6 +6,11 @@ jQuery.noConflict();
 			var initCalendar = function(selector) {
 
 				var calendar = $(selector).fullCalendar({
+					views: {
+						month: {
+							timeFormat: 'H:mm'
+						}
+					},
 					viewRender: function(view, element) {
 
 						if (typeof calendar !== 'undefined') {

@@ -33,6 +33,10 @@ Major shortcode to show events calendar.
 
 ## Changelog
 
+**1.0.1**
+
+- added support for all-day events
+
 **1.0.0**
 
 - Initialization on GIT
