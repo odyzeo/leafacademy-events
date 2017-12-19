@@ -34,6 +34,10 @@ Major shortcode to show events calendar.
 
 ## Changelog
 
+**1.0.4**
+
+- small improvements in build
+
 **1.0.3**
 
 - used gulp pump instead of pipe in gulpfile

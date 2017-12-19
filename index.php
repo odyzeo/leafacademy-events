@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Plugin Name: Leaf Academy Events Calendar
+ * Plugin Name: Events Calendar
  * Plugin URI: http://www.devstudio.sk
- * Description: TBA
- * Version: 1.0.3
+ * Description: Events calendar for Leaf Academy.
+ * Version: 1.0.4
  * Author: Dev Studio spol. s r.o.
  * Author URI: http://www.devstudio.sk
  * Text Domain: la-events-calendar
@@ -27,5 +27,3 @@ LA_Events_ACF::init();
 LA_Events_Core::init();
 LA_Events_REST::init();
 LA_Events_Shortcodes::init();
-
-

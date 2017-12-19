@@ -1,0 +1,43 @@
+.la-calendar-wrapper {
+  margin: 50px; }
+  @media screen and (max-width: 768px) {
+    .la-calendar-wrapper {
+      margin: 26px; } }
+  @media screen and (max-width: 768px) {
+    .la-calendar-wrapper .fc-wrapper {
+      order: 2; } }
+  .la-calendar-wrapper .categories {
+    padding-left: 25px; }
+    .la-calendar-wrapper .categories .mobile-view {
+      display: none; }
+      @media screen and (max-width: 768px) {
+        .la-calendar-wrapper .categories .mobile-view {
+          display: block; } }
+    .la-calendar-wrapper .categories .desktop-view {
+      display: block; }
+      @media screen and (max-width: 768px) {
+        .la-calendar-wrapper .categories .desktop-view {
+          display: none; } }
+    @media screen and (max-width: 768px) {
+      .la-calendar-wrapper .categories {
+        order: 1;
+        padding-left: 0; } }
+  .la-calendar-wrapper label[for="event_category"] {
+    font-weight: bold;
+    font-size: 26px; }
+  .la-calendar-wrapper ul#event_category {
+    margin: 20px 0px; }
+    .la-calendar-wrapper ul#event_category li {
+      cursor: pointer; }
+      .la-calendar-wrapper ul#event_category li:hover {
+        text-decoration: underline; }
+      .la-calendar-wrapper ul#event_category li.active {
+        color: #24b23b; }
+  .la-calendar-wrapper select[name="event_category"] {
+    display: block;
+    padding: 10px;
+    margin: 20px 0px;
+    width: 50%; }
+    @media screen and (max-width: 768px) {
+      .la-calendar-wrapper select[name="event_category"] {
+        width: 100%; } }

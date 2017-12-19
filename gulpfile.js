@@ -7,13 +7,20 @@ var gutil = require('gulp-util');
 var sass = require('gulp-sass');
 var pump = require('pump');
 
-gulp.task('copy', function() {
+var paths = {
+	css: ['css/*.css', '!css/*.min.css'],
+	js: ['js/*.js', '!js/*.min.js'],
+	sass: ['scss/*.scss']
+};
+
+gulp.task('copy', function(cb) {
 
 	pump([
 		gulp.src([
 			'bower_components/fullcalendar/dist/fullcalendar.min.css',
 			'bower_components/flexboxgrid/dist/flexboxgrid.min.css'
-		]), (gulp.dest('css'))
+		]),
+		gulp.dest('css')
 	]);
 
 	pump([
@@ -23,48 +30,60 @@ gulp.task('copy', function() {
 			'bower_components/gasparesganga-jquery-loading-overlay/src/loadingoverlay.min.js',
 			'bower_components/gasparesganga-jquery-loading-overlay/extras/loadingoverlay_progress/loadingoverlay_progress.min.js',
 			'node_modules/tippy.js/dist/tippy.all.min.js'
-		]), (gulp.dest('js'))
+		]),
+		gulp.dest('js')
 	]);
 
 	pump([
 		gulp.src([
 			'bower_components/gasparesganga-jquery-loading-overlay/src/loading.gif'
-		])
-		, (gulp.dest('images'))
-	]);
+		]),
+		gulp.dest('images')
+	], cb);
+
 });
 
-gulp.task('minify-css', function() {
-	return pump([
-		gulp.src(['css/*.css', '!css/*.min.css'])
-		, (cleanCSS({compatibility: 'ie8'}))
-		, (rename({
+gulp.task('minify-css', function(cb) {
+
+	pump([
+		gulp.src(paths.css),
+		cleanCSS({compatibility: 'ie8'}),
+		rename({
 			suffix: '.min'
-		}))
-		, (gulp.dest('css'))
-	]);
+		}),
+		gulp.dest('css')
+	], cb);
+
 });
 
-gulp.task('minify-js', function() {
-	return pump([gulp.src(['js/*.js', '!js/*.min.js'])
-		, (uglify())
-		, (rename({
+gulp.task('minify-js', function(cb) {
+
+	pump([
+		gulp.src(paths.js),
+		uglify(),
+		rename({
 			suffix: '.min'
-		}))
-		, (gulp.dest('js'))
-	]);
+		}),
+		gulp.dest('js')
+	], cb);
+
 });
 
-gulp.task('sass', function() {
-	return pump([gulp.src('./scss/*.scss')
-		, (sass().on('error', sass.logError))
-		, (gulp.dest('./css'))
-	]);
+gulp.task('sass', function(cb) {
+
+	pump([
+		gulp.src('./scss/*.scss'),
+		sass().on('error', sass.logError),
+		gulp.dest('./css')
+	], cb);
+
 });
 
 gulp.task('default', ['copy', 'sass', 'minify-css', 'minify-js'], function() {
-	gulp.watch(['css/*.css'], ['minify-css']);
-	gulp.watch(['js/*.js'], ['minify-js']);
-	gulp.watch(['scss/*.scss'], ['sass', 'minify-css']);
+
+	gulp.watch(paths.css, ['minify-css']);
+	gulp.watch(paths.js, ['minify-js']);
+	gulp.watch(paths.sass, ['sass', 'minify-css']);
 	gutil.log(gutil.colors.green('Build complete! Watching files ...'));
+
 });

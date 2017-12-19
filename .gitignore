@@ -45,3 +45,13 @@ fabric.properties
 
 /bower_components/
 /node_modules/
+/css/fullcalendar.min.css
+/css/flexboxgrid.min.css
+/css/la-events-calendar.min.css
+/js/fullcalendar.min.js
+/js/tippy.all.min.js
+/js/loadingoverlay.min.js
+/js/loadingoverlay_progress.min.js
+/js/la-events-calendar.min.js
+/js/moment-with-locales.min.js
+/images/loading.gif

@@ -7,7 +7,7 @@
  */
 class LA_Events_Shortcodes {
 
-	const SHOW_CALENDAR_SHORTCODE = 'ls-events-calendar';
+	const SHOW_CALENDAR_SHORTCODE = 'la-events-calendar';
 
 	public static $isCalendarVisible = FALSE;
 
