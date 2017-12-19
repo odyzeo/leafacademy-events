@@ -6,6 +6,9 @@ var watch = require('gulp-watch');
 var gutil = require('gulp-util');
 var sass = require('gulp-sass');
 var pump = require('pump');
+var dateFormat = require('dateformat');
+var zip = require('gulp-zip');
+var del = require('del');
 
 var paths = {
 	css: ['css/*.css', '!css/*.min.css'],
@@ -79,11 +82,68 @@ gulp.task('sass', function(cb) {
 
 });
 
-gulp.task('default', ['copy', 'sass', 'minify-css', 'minify-js'], function() {
+gulp.task('build', ['copy', 'sass', 'minify-css', 'minify-js'], function(cb) {
+
+	pump([
+		gulp.src([
+			'**/*',
+			'!node_modules',
+			'!node_modules/**',
+			'!bower_components',
+			'!bower_components/**',
+			'!scss',
+			'!scss**',
+			'!dist',
+			'!dist/**',
+			'!packaged',
+			'!packaged/**',
+			'!bower.json',
+			'!gulpfile.js',
+			'!package.json',
+			'!package-lock.json',
+			'!codesniffer.ruleset.xml',
+			'!*.md',
+			'!**/*.scss'
+		]),
+		gulp.dest('dist')
+	], cb);
+
+});
+
+gulp.task('watch', ['build'], function() {
 
 	gulp.watch(paths.css, ['minify-css']);
 	gulp.watch(paths.js, ['minify-js']);
 	gulp.watch(paths.sass, ['sass', 'minify-css']);
-	gutil.log(gutil.colors.green('Build complete! Watching files ...'));
+
+	gutil.log(gutil.colors.green('Watching files ...'));
 
 });
+
+gulp.task('package', ['build'], function(cb) {
+
+	var fs = require('fs');
+	var time = dateFormat(new Date(), "yyyy-mm-dd_HH-MM");
+	var pkg = JSON.parse(fs.readFileSync('./package.json'));
+	var filename = pkg.name + '-' + pkg.version + '-' + time + '.zip';
+
+	pump([
+		gulp.src([
+			'./dist/**/*'
+		]),
+		zip(filename),
+		gulp.dest('packaged')
+	], cb);
+
+});
+
+gulp.task('clean', function() {
+
+	return del([
+		'dist',
+		'packaged'
+	]);
+
+});
+
+gulp.task('default', ['build']);

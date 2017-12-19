@@ -55,3 +55,4 @@ fabric.properties
 /js/la-events-calendar.min.js
 /js/moment-with-locales.min.js
 /images/loading.gif
+/dist/

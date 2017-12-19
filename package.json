@@ -36,5 +36,10 @@
 		"pump": "^2.0.0",
 		"tippy.js": "^2.0.8",
 		"tooltip.js": "^1.1.7"
+	},
+	"devDependencies": {
+		"dateformat": "^3.0.2",
+		"del": "^3.0.0",
+		"gulp-zip": "^4.0.0"
 	}
 }
