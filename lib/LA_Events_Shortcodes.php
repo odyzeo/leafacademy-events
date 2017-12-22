@@ -103,11 +103,11 @@ class LA_Events_Shortcodes {
 
 		if (self::$isCalendarVisible) {
 			wp_enqueue_script('moment-with-locales-js', plugins_url('/js/moment-with-locales.min.js', LA_EVENTS_INDEX), array('jquery'), '1.0.0', FALSE);
-			wp_enqueue_script('fullcalendar-js', plugins_url('/js/fullcalendar.js', LA_EVENTS_INDEX), array('moment-with-locales-js'), '1.0.0', FALSE);
+			wp_enqueue_script('fullcalendar-js', plugins_url('/js/fullcalendar.min.js', LA_EVENTS_INDEX), array('moment-with-locales-js'), '1.0.0', FALSE);
 			wp_enqueue_script('loadingoverlay-js', plugins_url('/js/loadingoverlay.min.js', LA_EVENTS_INDEX), array('fullcalendar-js'), '1.0.0', FALSE);
 			wp_enqueue_script('loadingoverlay-js-extra', plugins_url('/js/loadingoverlay_progress.min.js', LA_EVENTS_INDEX), array('fullcalendar-js'), '1.0.0', FALSE);
 			wp_enqueue_script('tippy-js', plugins_url('/js/tippy.all.min.js', LA_EVENTS_INDEX), array('loadingoverlay-js-extra'), '1.0.0', FALSE);
-			wp_enqueue_script('la-events-calendar-js', plugins_url('/js/la-events-calendar.min.js', LA_EVENTS_INDEX), array('tippy-js'), '1.0.2', FALSE);
+			wp_enqueue_script('la-events-calendar-js', plugins_url('/js/la-events-calendar.min.js', LA_EVENTS_INDEX), array('tippy-js'), '1.0.3', FALSE);
 			wp_localize_script('la-events-calendar-js', 'LA_Events', array(
 				'rest_url' => rest_url(),
 				'event_start' => __('Event start :', LA_Events_Core::TEXT_DOMAIN),
@@ -120,7 +120,7 @@ class LA_Events_Shortcodes {
 					$(function() {
 						$(document).ready(function() {
 							jQuery('head').append('<link rel="stylesheet" type="text/css" href="<?php echo plugins_url('/css/fullcalendar.min.css?v=1.0.0', LA_EVENTS_INDEX); ?>">');
-							jQuery('head').append('<link rel="stylesheet" type="text/css" href="<?php echo plugins_url('/css/la-events-calendar.min.css?v=1.0.1', LA_EVENTS_INDEX); ?>">');
+							jQuery('head').append('<link rel="stylesheet" type="text/css" href="<?php echo plugins_url('/css/la-events-calendar.min.css?v=1.0.3', LA_EVENTS_INDEX); ?>">');
 							jQuery('head').append('<link rel="stylesheet" type="text/css" href="<?php echo plugins_url('/css/flexboxgrid.min.css?v=1.0.0', LA_EVENTS_INDEX); ?>">');
 						});
 					});

@@ -17,6 +17,10 @@ jQuery.noConflict();
 						if (typeof calendar !== 'undefined') {
 							updateViewInformations(calendar);
 
+							var eventsEndpoint = LA_Events.rest_url + 'la-events-calendar/v1/event/';
+
+							callRestApiEndpoint(eventsEndpoint, calendar);
+
 						}
 					},
 					// eventClick: function(event, jsEvent, view) {

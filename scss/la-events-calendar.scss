@@ -75,6 +75,9 @@ $small-size: 768px;
 		li {
 
 			padding-left: 20px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			margin-bottom: 20px;
 
 			&::before {
 				display: none;
