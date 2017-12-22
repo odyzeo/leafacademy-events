@@ -27,7 +27,7 @@
     "tests"
   ],
   "dependencies": {
-    "fullcalendar": "^3.7.0",
+    "fullcalendar": "^3.8.0",
     "flexboxgrid": "^6.3.2",
     "gasparesganga-jquery-loading-overlay": "^1.5.4",
     "popper.js": "^1.12.9"

@@ -32,7 +32,17 @@ Major shortcode to show events calendar.
 - [Moment](https://momentjs.com/)
 - [tippy.js](https://atomiks.github.io/tippyjs/)
 
+## Dependencies
+
+- [WP Term Colors](https://sk.wordpress.org/plugins/wp-term-colors/)
+
 ## Changelog
+
+**1.0.5**
+
+- added tippy popup for mobile view as well
+- added categories colors
+- fixed wrong wrapping in mobile view
 
 **1.0.4**
 

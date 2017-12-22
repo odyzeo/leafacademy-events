@@ -4,12 +4,14 @@
  * Class LA_Events_Core
  *
  * @since 1.0.0
+ * @since 1.0.5 Added category default color
  */
 class LA_Events_Core {
 
 	const EVENT_POST_TYPE = 'la-event';
 	const EVENT_POST_TYPE_CATEGORY = 'la-event-category';
 	const TEXT_DOMAIN = 'la-events-calendar';
+	const DEFAULT_EVENT_CATEGORY_COLOR = '#EFEFEF';
 
 	/**
 	 * Initialization

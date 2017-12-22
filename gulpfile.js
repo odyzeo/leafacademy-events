@@ -29,6 +29,7 @@ gulp.task('copy', function(cb) {
 	pump([
 		gulp.src([
 			'bower_components/fullcalendar/dist/fullcalendar.min.js',
+			'bower_components/fullcalendar/dist/fullcalendar.js',
 			'bower_components/moment/min/moment-with-locales.min.js',
 			'bower_components/gasparesganga-jquery-loading-overlay/src/loadingoverlay.min.js',
 			'bower_components/gasparesganga-jquery-loading-overlay/extras/loadingoverlay_progress/loadingoverlay_progress.min.js',

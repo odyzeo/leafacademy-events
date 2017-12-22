@@ -1,5 +1,18 @@
+.la-events-listing {
+  display: none; }
+  @media screen and (max-width: 768px) {
+    .la-events-listing {
+      display: none; } }
+
 .la-calendar-wrapper {
   margin: 50px; }
+  .la-calendar-wrapper .fc-content {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    padding: 2px; }
   @media screen and (max-width: 768px) {
     .la-calendar-wrapper {
       margin: 26px; } }
@@ -26,9 +39,13 @@
     font-weight: bold;
     font-size: 26px; }
   .la-calendar-wrapper ul#event_category {
-    margin: 20px 0px; }
+    margin: 20px 0px;
+    padding-left: 0; }
     .la-calendar-wrapper ul#event_category li {
+      padding-left: 20px;
       cursor: pointer; }
+      .la-calendar-wrapper ul#event_category li::before {
+        display: none; }
       .la-calendar-wrapper ul#event_category li:hover {
         text-decoration: underline; }
       .la-calendar-wrapper ul#event_category li.active {
@@ -41,3 +58,11 @@
     @media screen and (max-width: 768px) {
       .la-calendar-wrapper select[name="event_category"] {
         width: 100%; } }
+
+.tippy-tooltip {
+  padding: 12px; }
+  .tippy-tooltip h1 {
+    font-size: 25px;
+    margin-bottom: 10px; }
+  .tippy-tooltip h2 {
+    font-size: 15px; }

@@ -26,6 +26,54 @@ class LA_Events_REST {
 			'callback' => array(__CLASS__, 'getEventsEndpoint')
 		));
 
+		// register_rest_route('la-events-calendar/v1', '/event-mobile/page=(?P<page>\d+)&total=(?P<total>\d+)&per_page=(?P<per_page>\d+)&category=(?P<category>\d+)', array(
+		// 	'methods' => 'GET',
+		// 	'callback' => array(__CLASS__, 'getEventsMobileEndpoint')
+		// ));
+
+	}
+
+	public static function getEventsMobileEndpoint($data) {
+
+		$total = $data['total'];
+		$page = $data['page'];
+		$perPage = $data['per_page'];
+		$category = $data['category'];
+
+		$taxQuery = array();
+		if ($category !== 0) {
+			$taxQuery = array(
+				array(
+					'taxonomy' => LA_Events_Core::EVENT_POST_TYPE_CATEGORY,
+					'field' => 'term_id',
+					'terms' => $category
+				)
+			);
+		}
+
+		$today = current_time('d M, y');
+
+		$metaQuery = array(
+
+			'relation' => 'OR',
+			array(
+				'key' => LA_Events_ACF::EVENT_START_DATE_FIELD,
+				'value' => $today,
+				'compare' => '>=',
+				'type' => 'DATE'
+			),
+			array(
+				'key' => LA_Events_ACF::EVENT_START_DATE_TIME_FIELD,
+				'value' => $today,
+				'compare' => '>=',
+				'type' => 'DATE'
+			)
+		);
+
+		$events = LA_Events_Helper::getEventsFromWPQuery($metaQuery, $taxQuery);
+
+		print_r($events);
+
 	}
 
 	/**
@@ -58,15 +106,41 @@ class LA_Events_REST {
 		}
 
 		$metaQuery = array(
+
+			'relation' => 'OR',
 			array(
-				'key' => LA_Events_ACF::EVENT_DATE_FIELD,
-				'value' => array($startIntervalDate, $endIntervalDate),
-				'compare' => 'BETWEEN',
-				'type' => 'DATE'
+				'relation' => 'AND',
+				array(
+					'key' => LA_Events_ACF::EVENT_START_DATE_FIELD,
+					'value' => array($startIntervalDate, $endIntervalDate),
+					'compare' => 'BETWEEN',
+					'type' => 'DATE'
+				),
+				array(
+					'key' => LA_Events_ACF::EVENT_END_DATE_FIELD,
+					'value' => array($startIntervalDate, $endIntervalDate),
+					'compare' => 'BETWEEN',
+					'type' => 'DATE'
+				)
+			),
+			array(
+				'relation' => 'AND',
+				array(
+					'key' => LA_Events_ACF::EVENT_START_DATE_TIME_FIELD,
+					'value' => array($startIntervalDate, $endIntervalDate),
+					'compare' => 'BETWEEN',
+					'type' => 'DATE'
+				),
+				array(
+					'key' => LA_Events_ACF::EVENT_END_DATE_TIME_FIELD,
+					'value' => array($startIntervalDate, $endIntervalDate),
+					'compare' => 'BETWEEN',
+					'type' => 'DATE'
+				)
 			)
 		);
 
-		$events = LA_Events_Helper::buildEventsQuery($metaQuery, $taxQuery);
+		$events = LA_Events_Helper::getEventsFromWPQuery($metaQuery, $taxQuery);
 		$eventsObject = LA_Events_Helper::buildEventsObject($events);
 		$calendarObject = LA_Events_Helper::convertEventsObjectIntoCalendarObject($eventsObject);
 

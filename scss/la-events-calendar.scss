@@ -1,11 +1,31 @@
 $small-size: 768px;
 
+.la-events-listing {
+
+	display: none;
+
+	@media screen and (max-width: $small-size) {
+		display: none;
+	}
+
+}
+
 .la-calendar-wrapper {
 
 	margin: 50px;
 
+	.fc-content {
+		white-space: pre-wrap;
+		white-space: -moz-pre-wrap;
+		white-space: -pre-wrap;
+		white-space: -o-pre-wrap;
+		word-wrap: break-word;
+		padding: 2px;
+	}
+
 	@media screen and (max-width: $small-size) {
 		margin: 26px;
+		//display: none;
 	}
 
 	.fc-wrapper {
@@ -50,8 +70,15 @@ $small-size: 768px;
 
 	ul#event_category {
 		margin: 20px 0px;
+		padding-left: 0;
 
 		li {
+
+			padding-left: 20px;
+
+			&::before {
+				display: none;
+			}
 
 			cursor: pointer;
 
@@ -79,4 +106,17 @@ $small-size: 768px;
 
 	}
 
+}
+
+.tippy-tooltip {
+	padding: 12px;
+
+	h1 {
+		font-size: 25px;
+		margin-bottom: 10px;
+	}
+
+	h2 {
+		font-size: 15px;
+	}
 }
