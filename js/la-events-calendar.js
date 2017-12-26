@@ -17,29 +17,12 @@ jQuery.noConflict();
 						if (typeof calendar !== 'undefined') {
 							updateViewInformations(calendar);
 
+							var eventsEndpoint = LA_Events.rest_url + 'la-events-calendar/v1/event/';
+
+							callRestApiEndpoint(eventsEndpoint, calendar);
+
 						}
 					},
-					// eventClick: function(event, jsEvent, view) {
-					//
-					// 	var currentView = view.name;
-					//
-					// 	if (currentView == 'listMonth') {
-					//
-					// 		var isEventAllDay = event.allDay;
-					// 		var eventTitle = event.title;
-					// 		var eventDate = getEventTime(event.start._i);
-					//
-					// 		var alertTitle = eventDate + ' ' + eventTitle;
-					//
-					// 		if (isEventAllDay) {
-					// 			alertTitle = eventTitle;
-					// 		}
-					//
-					// 		alert(alertTitle);
-					//
-					// 	}
-					//
-					// },
 					eventRender: function(event, element, view) {
 
 						var currentView = view.name;
@@ -59,21 +42,6 @@ jQuery.noConflict();
 							if (isEventAllDay) {
 								eventHtml = '<a style="background-color:' + eventColor + ';border:' + eventColor + ';" class="fc-day-grid-event fc-h-event fc-event fc-start fc-end tippy" data-tippy-arrow="true" data-tippy-animation="shift-toward" data-tippy-duration="[600,300]" data-id="' + eventId + '" data-tipp-trigger="mouseenter"><div class="fc-content"><span class="fc-title">' + event.title + '</span></div></a>';
 							}
-						}
-
-						else {
-
-
-							eventHtml = '<tr class="fc-list-item tippy" data-tippy-arrow="true" data-tippy-animation="shift-toward" data-tippy-duration="[600,300]" data-id="' + eventId + '" data-tipp-trigger="mouseenter"><td class="fc-list-item-time fc-widget-content"></td><td class="fc-list-item-marker fc-widget-content"><span class="fc-event-dot" style="background-color:' + eventColor + '"></span></td><td class="fc-list-item-title fc-widget-content"><a>' + event.title + '</a></td></tr>';
-
-							if (isEventAllDay) {
-
-								eventHtml = '<tr class="fc-list-item tippy" data-tippy-arrow="true" data-tippy-animation="shift-toward" data-tippy-duration="[600,300]" data-id="' + eventId + '" data-tipp-trigger="mouseenter"><td class="fc-list-item-time fc-widget-content">' + LA_Events.all_day + '</td><td class="fc-list-item-marker fc-widget-content"><span class="fc-event-dot" style="background-color:' + eventColor + '"></span></td><td class="fc-list-item-title fc-widget-content"><a>' + event.title + '</a></td></tr>';
-
-
-							}
-
-
 						}
 
 						return $(eventHtml);
@@ -129,12 +97,11 @@ jQuery.noConflict();
 
 					var categoryField = $('select[name="event_category"]');
 
-					updateHelperForm('category', categoryField.find(":selected").val())
+					updateHelperForm('page', 0);
+					updateHelperForm('category', categoryField.find(":selected").val());
 					updateViewInformations(calendar);
 
-					var eventsEndpoint = LA_Events.rest_url + 'la-events-calendar/v1/event/';
-
-					callRestApiEndpoint(eventsEndpoint, calendar);
+					callMobileRestApiEndpoint(LA_Events.mobile_rest_url, true);
 
 				});
 
@@ -196,7 +163,6 @@ jQuery.noConflict();
 				var endInterval = form.find('input[name="end_interval"]').val();
 				var category = form.find('input[name="category"]').val();
 				var page = form.find('input[name="page"]').val();
-				var total = form.find('input[name="total"]').val();
 				var perPage = form.find('input[name="per_page"]').val();
 
 				return {
@@ -204,7 +170,6 @@ jQuery.noConflict();
 					'end_interval': endInterval,
 					'category': category,
 					'page': page,
-					'total': total,
 					'per_page': perPage
 				};
 
@@ -251,7 +216,7 @@ jQuery.noConflict();
 
 			};
 
-			var callMobileRestApiEndpoint = function(restUrl) {
+			var callMobileRestApiEndpoint = function(restUrl, refreshView) {
 
 				var helperFormData = getHelperFormData();
 
@@ -260,12 +225,56 @@ jQuery.noConflict();
 				var perPage = helperFormData.per_page;
 				var category = helperFormData.category;
 
+				var mobileCalendarLayout = $('.la-events-listing .listing');
+
+				mobileCalendarLayout.LoadingOverlay('show');
+
 				$.ajax({
-					url: restUrl + 'page=' + page + '&total=' + total + '&per_page=' + perPage + '&category=' + category,
+					url: restUrl + 'page=' + page + '&per_page=' + perPage + '&category=' + category,
 					success: function(data) {
 
-						console.log(data);
+						appendItemsToHandlebarsResults(data, '.la-events-listing .listing', 'event-item', refreshView);
+						mobileCalendarLayout.LoadingOverlay('hide');
+
+						var total = data.total;
+						var currentPage = data.page;
+
+						updateHelperForm('page', currentPage);
+						updateHelperForm('total', total);
+
+						if (currentPage < total) {
+
+							if (currentPage == 1) {
+								renderLoadMore('.la-events-listing');
+							}
+						} else {
+							$('.load-more').hide();
+						}
 					}
+				});
+
+			};
+
+			var renderLoadMore = function(selector) {
+
+				var appendElement = $(selector);
+
+				var buttonHtml = '<div class="row load-more-wrapper"><div class="col-xs-12 inner"><div class="load-more ninja-forms-field btn green nf-element">' + LA_Events.load_more + '</div></div></div>';
+
+				appendElement.append(buttonHtml);
+
+				loadMoreButtonClick('.load-more');
+
+			};
+
+			var loadMoreButtonClick = function(selector) {
+
+				var element = $(selector);
+
+				element.on('click', function() {
+
+					console.log('clicked');
+					callMobileRestApiEndpoint(LA_Events.mobile_rest_url, false);
 				});
 
 			};
@@ -274,25 +283,45 @@ jQuery.noConflict();
 
 				var eventTitle = event.title;
 				var eventAllDay = event.allDay;
-				var eventStart = event.start;
+				var eventStart = getEventTime(event.start);
 				var eventColor = event.backgroundColor;
 				var eventContent = event.extra.content;
+
+				generateHtml(eventId, eventTitle, eventAllDay, eventStart, eventColor, eventContent);
+
+				return $('#' + eventId)[0];
+
+			};
+
+			var generateMobileHtmlTemplateForTippy = function(eventId, event) {
+
+				var eventTitle = event.title;
+				var eventAllDay = event.all_day;
+				var eventStart = event.date_object.start_time;
+				var eventColor = event.category.color;
+				var eventContent = event.content;
+
+				generateHtml(eventId, eventTitle, eventAllDay, eventStart, eventColor, eventContent);
+
+				return $('#' + eventId)[0];
+
+			};
+
+			var generateHtml = function(eventId, title, allday, start, backgroundColor, content) {
 
 				var html = '';
 
 				html += '<div id="' + eventId + '">';
-				html += '<h1 style="border-left:4px solid ' + eventColor + ';padding-left:12px;">' + eventTitle + '</h1>';
+				html += '<h1 style="border-left:4px solid ' + backgroundColor + ';padding-left:12px;">' + title + '</h1>';
 
-				if (!eventAllDay) {
-					html += LA_Events.event_start + ' ' + getEventTime(eventStart);
+				if (!allday) {
+					html += LA_Events.event_start + ' ' + start;
 				}
 
-				html += '<h2>' + eventContent + '</h2>';
+				html += '<h2>' + content + '</h2>';
 				html += '</div>';
 
 				$('body').append(html);
-
-				return $('#' + eventId)[0];
 
 			};
 
@@ -317,15 +346,42 @@ jQuery.noConflict();
 
 			var initMobileListing = function() {
 
-				var eventsEndpoint = LA_Events.rest_url + 'la-events-calendar/v1/event-mobile/';
-
-				callMobileRestApiEndpoint(eventsEndpoint);
+				callMobileRestApiEndpoint(LA_Events.mobile_rest_url);
 
 			};
 
+			var appendItemsToHandlebarsResults = function(items, resultsSelector, templateId, refreshView) {
+
+				var resultsElement = $(resultsSelector);
+				var source = document.getElementById(templateId).innerHTML;
+				var template = Handlebars.compile(source);
+				var html = template(items);
+
+
+				if (refreshView) {
+					resultsElement.empty();
+				}
+
+				resultsElement.append(html);
+
+				for (var i = 0; i < items.items.length; i++) {
+
+					var eventWpId = items.items[i].ID;
+
+					tippy('.row.item.tippy[data-id="' + eventWpId + '"]', {
+						html: function(e) {
+
+							return generateMobileHtmlTemplateForTippy(eventWpId, items.items[i]);
+
+						}
+					});
+
+				}
+
+			};
 
 			initCalendar('#la-calendar');
-			// initMobileListing();
+			initMobileListing();
 
 		});
 	});

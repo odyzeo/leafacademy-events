@@ -38,6 +38,10 @@ Major shortcode to show events calendar.
 
 ## Changelog
 
+**1.0.6**
+
+- completely changed mobile layout
+
 **1.0.5**
 
 - added tippy popup for mobile view as well

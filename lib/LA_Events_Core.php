@@ -12,15 +12,19 @@ class LA_Events_Core {
 	const EVENT_POST_TYPE_CATEGORY = 'la-event-category';
 	const TEXT_DOMAIN = 'la-events-calendar';
 	const DEFAULT_EVENT_CATEGORY_COLOR = '#EFEFEF';
+	const DEFAULT_EVENT_PER_PAGE = 1;
 
 	/**
 	 * Initialization
+	 *
+	 * @since 1.6.0 Added wp_footer action
 	 */
 	public static function init() {
 
 		add_action('init', array(__CLASS__, 'registerPostTypes'));
 		add_action('init', array(__CLASS__, 'registerTaxonomies'));
 		add_action('plugins_loaded', array(__CLASS__, 'loadTextDomain'));
+		add_action('wp_footer', array(__CLASS__, 'wpFooter'));
 
 	}
 
@@ -126,6 +130,50 @@ class LA_Events_Core {
 		$translationsDir = LA_EVENTS_PATH . 'i18n';
 
 		load_plugin_textdomain(self::TEXT_DOMAIN, FALSE, $translationsDir);
+	}
+
+	/**
+	 * Action firing in footer
+	 *
+	 * @since 1.6.0
+	 */
+	public static function wpFooter() {
+
+		if (LA_Events_Shortcodes::$isCalendarVisible) {
+			?>
+			<script id="event-item" type="text/x-handlebars-template">
+				{{#each items}}
+				<div class="row item middle-xs tippy" data-tippy-arrow="true" data-tippy-animation="shift-toward" data-tippy-duration="[600,300]" data-id="{{ID}}" data-tipp-trigger="mouseenter">
+					<div class="col-xs-12 heading">
+						<div class="row">
+							<div class="col-xs-9 date">
+								{{#if all_day}}
+								{{date_object.start_date}} - {{date_object.end_date}}
+								{{else}}
+								{{date_object.start_date}} {{date_object.start_time}} - {{date_object.end_date}} {{date_object.end_time}}
+								{{/if}}
+							</div>
+							<div class="col-xs-3 extra">
+								{{#if all_day}}
+								<?php _e('All day', self::TEXT_DOMAIN); ?>
+								{{/if}}
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 data">
+						<div class="row middle-xs">
+							<div class="col-xs-1">
+								<div class="category_marker" style="background-color:{{category.color}};"></div>
+							</div>
+							<div class="col-xs-11 title">{{title}}</div>
+						</div>
+					</div>
+				</div>
+				{{/each}}
+			</script>
+			<?php
+		}
+
 	}
 
 }

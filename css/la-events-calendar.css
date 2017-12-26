@@ -1,9 +1,3 @@
-.la-events-listing {
-  display: none; }
-  @media screen and (max-width: 768px) {
-    .la-events-listing {
-      display: none; } }
-
 .la-calendar-wrapper {
   margin: 50px; }
   .la-calendar-wrapper .fc-content {
@@ -15,7 +9,8 @@
     padding: 2px; }
   @media screen and (max-width: 768px) {
     .la-calendar-wrapper {
-      margin: 26px; } }
+      margin: 26px;
+      display: none; } }
   @media screen and (max-width: 768px) {
     .la-calendar-wrapper .fc-wrapper {
       order: 2; } }
@@ -50,14 +45,44 @@
         text-decoration: underline; }
       .la-calendar-wrapper ul#event_category li.active {
         color: #24b23b; }
-  .la-calendar-wrapper select[name="event_category"] {
-    display: block;
-    padding: 10px;
-    margin: 20px 0px;
-    width: 50%; }
-    @media screen and (max-width: 768px) {
-      .la-calendar-wrapper select[name="event_category"] {
-        width: 100%; } }
+
+select[name="event_category"] {
+  display: block;
+  padding: 10px;
+  margin: 20px 0px;
+  width: 50%; }
+  @media screen and (max-width: 768px) {
+    select[name="event_category"] {
+      width: 100%; } }
+
+.la-events-listing {
+  margin: 26px; }
+  .la-events-listing .listing {
+    min-height: 120px;
+    border-top: 1px solid #ddd; }
+    .la-events-listing .listing .item {
+      border-bottom: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd; }
+      .la-events-listing .listing .item .heading, .la-events-listing .listing .item .data {
+        padding: 10px; }
+      .la-events-listing .listing .item .heading {
+        background: #f7f7f7;
+        border-bottom: 1px solid #ddd; }
+        .la-events-listing .listing .item .heading .date {
+          font-weight: bold; }
+        .la-events-listing .listing .item .heading .extra {
+          text-align: right; }
+      .la-events-listing .listing .item:last-child {
+        border-bottom: 1px solid #ddd; }
+      .la-events-listing .listing .item .category_marker {
+        width: 8px;
+        height: 8px;
+        border-radius: 14px; }
+  .la-events-listing .load-more-wrapper .inner {
+    text-align: center; }
+    .la-events-listing .load-more-wrapper .inner .load-more {
+      margin-top: 15px; }
 
 .tippy-tooltip {
   padding: 12px; }

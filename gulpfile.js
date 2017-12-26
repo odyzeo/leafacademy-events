@@ -29,11 +29,12 @@ gulp.task('copy', function(cb) {
 	pump([
 		gulp.src([
 			'bower_components/fullcalendar/dist/fullcalendar.min.js',
-			'bower_components/fullcalendar/dist/fullcalendar.js',
 			'bower_components/moment/min/moment-with-locales.min.js',
 			'bower_components/gasparesganga-jquery-loading-overlay/src/loadingoverlay.min.js',
 			'bower_components/gasparesganga-jquery-loading-overlay/extras/loadingoverlay_progress/loadingoverlay_progress.min.js',
-			'node_modules/tippy.js/dist/tippy.all.min.js'
+			'node_modules/tippy.js/dist/tippy.all.min.js',
+			'bower_components/handlebars/handlebars.min.js',
+			'bower_components/handlebars/handlebars.runtime.min.js'
 		]),
 		gulp.dest('js')
 	]);

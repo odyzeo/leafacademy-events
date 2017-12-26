@@ -26,19 +26,27 @@ class LA_Events_REST {
 			'callback' => array(__CLASS__, 'getEventsEndpoint')
 		));
 
-		// register_rest_route('la-events-calendar/v1', '/event-mobile/page=(?P<page>\d+)&total=(?P<total>\d+)&per_page=(?P<per_page>\d+)&category=(?P<category>\d+)', array(
-		// 	'methods' => 'GET',
-		// 	'callback' => array(__CLASS__, 'getEventsMobileEndpoint')
-		// ));
+		register_rest_route('la-events-calendar/v1', '/event-mobile/page=(?P<page>\d+)&per_page=(?P<per_page>\d+)&category=(?P<category>\d+)', array(
+			'methods' => 'GET',
+			'callback' => array(__CLASS__, 'getEventsMobileEndpoint')
+		));
 
 	}
 
+	/**
+	 * Get events for mobile from REST API
+	 *
+	 * @param $data array Array with data from request
+	 *
+	 * @return array REST API response
+	 *
+	 * @since 1.0.6
+	 */
 	public static function getEventsMobileEndpoint($data) {
 
-		$total = $data['total'];
-		$page = $data['page'];
+		$page = $data['page'] + 1;
 		$perPage = $data['per_page'];
-		$category = $data['category'];
+		$category = intval($data['category']);
 
 		$taxQuery = array();
 		if ($category !== 0) {
@@ -51,28 +59,49 @@ class LA_Events_REST {
 			);
 		}
 
-		$today = current_time('d M, y');
+		$today = current_time('Ymd');
 
 		$metaQuery = array(
 
 			'relation' => 'OR',
 			array(
-				'key' => LA_Events_ACF::EVENT_START_DATE_FIELD,
-				'value' => $today,
-				'compare' => '>=',
-				'type' => 'DATE'
+				'relation' => 'OR',
+				array(
+					'key' => LA_Events_ACF::EVENT_START_DATE_FIELD,
+					'value' => $today,
+					'compare' => '>=',
+				),
+				array(
+					'key' => LA_Events_ACF::EVENT_END_DATE_FIELD,
+					'value' => $today,
+					'compare' => '<',
+				)
 			),
 			array(
-				'key' => LA_Events_ACF::EVENT_START_DATE_TIME_FIELD,
-				'value' => $today,
-				'compare' => '>=',
-				'type' => 'DATE'
+				'relation' => 'OR',
+				'datetime' => array(
+					'key' => LA_Events_ACF::EVENT_START_DATE_TIME_FIELD,
+					'value' => $today,
+					'compare' => '>=',
+				),
+				'date' => array(
+					'key' => LA_Events_ACF::EVENT_END_DATE_TIME_FIELD,
+					'value' => $today,
+					'compare' => '<',
+				)
 			)
 		);
 
-		$events = LA_Events_Helper::getEventsFromWPQuery($metaQuery, $taxQuery);
+		$events = LA_Events_Helper::getEventsFromWPQuery($metaQuery, $taxQuery, TRUE, $page, $perPage);
+		$eventsCounted = (intval(LA_Events_Helper::getEventsFromWPQuery($metaQuery, $taxQuery, TRUE, $page, $perPage, TRUE)) / LA_Events_Core::DEFAULT_EVENT_PER_PAGE);
+		$eventsObject = LA_Events_Helper::buildEventsObject($events);
 
-		print_r($events);
+		return array(
+			'items' => $eventsObject,
+			'total' => $eventsCounted,
+			'per_page' => $perPage,
+			'page' => $page
+		);
 
 	}
 

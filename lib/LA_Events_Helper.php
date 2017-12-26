@@ -12,10 +12,17 @@ class LA_Events_Helper {
 	 *
 	 * @param array $metaQuery WP_Query meta_query array
 	 * @param array $taxQuery WP_Query tax_query array
+	 * @param bool $pagination Use custom ordering parameters
+	 * @param int $page Current page to load
+	 * @param int $perPage Posts per page
+	 * @param bool $countOnly Return only counted posts
 	 *
 	 * @return array Array of WP_Post objects
+	 *
+	 * @since 1.0.6 Added pagination parameters
+	 *                Added count only parameter
 	 */
-	public static function getEventsFromWPQuery($metaQuery = array(), $taxQuery = array()) {
+	public static function getEventsFromWPQuery($metaQuery = array(), $taxQuery = array(), $pagination = FALSE, $page = 0, $perPage = 0, $countOnly = FALSE) {
 
 		$queryArgs = array(
 			'post_type' => LA_Events_Core::EVENT_POST_TYPE
@@ -29,7 +36,16 @@ class LA_Events_Helper {
 			$queryArgs['tax_query'] = $taxQuery;
 		}
 
+		if ($pagination) {
+			$queryArgs['paged'] = $page;
+			$queryArgs['posts_per_page'] = $perPage;
+		}
+
 		$queryPosts = new WP_Query($queryArgs);
+
+		if ($countOnly) {
+			return $queryPosts->found_posts;
+		}
 
 		return $queryPosts->posts;
 
@@ -45,6 +61,7 @@ class LA_Events_Helper {
 	 * @since 1.0.1 Parameters for all-day events added
 	 * @since 1.0.5 Added event end parameters into object
 	 *              Added event category parameters
+	 * @since 1.0.6 Added date object to catch all needed formatted date informations
 	 */
 	public static function buildEventsObject($posts = array()) {
 
@@ -70,6 +87,11 @@ class LA_Events_Helper {
 				$eventEndDate = get_field(LA_Events_ACF::EVENT_END_DATE_FIELD, $eventId);
 			}
 
+			$formattedStartDate = date_format(date_create($eventDate), 'd.M');
+			$formattedStartTime = date_format(date_create($eventDate), 'G:i');
+			$formattedEndDate = date_format(date_create($eventEndDate), 'd.M');
+			$formattedEndTime = date_format(date_create($eventEndDate), 'G:i');
+
 			$categoryTermColor = get_term_meta($eventCategoryId, 'color', TRUE);
 
 			if (!empty($categoryTermColor)) {
@@ -83,6 +105,12 @@ class LA_Events_Helper {
 				'event_date' => $eventDate,
 				'event_end_date' => $eventEndDate,
 				'all_day' => $eventAllDay,
+				'date_object' => array(
+					'start_date' => $formattedStartDate,
+					'start_time' => $formattedStartTime,
+					'end_date' => $formattedEndDate,
+					'end_time' => $formattedEndTime
+				),
 				'category' => array(
 					'id' => $eventCategoryId,
 					'name' => $eventCategory->name,
