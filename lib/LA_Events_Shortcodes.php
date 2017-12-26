@@ -65,6 +65,15 @@ class LA_Events_Shortcodes {
 							<?php endforeach; ?>
 						</ul>
 					</div>
+					<div class="mobile-view">
+						<label for="event_category"><?php _e('Categories', LA_Events_Core::TEXT_DOMAIN); ?></label>
+						<select name="event_category">
+							<option value="0"><?php _e('All categories', LA_Events_Core::TEXT_DOMAIN); ?></option>
+							<?php foreach ($eventCategories as $category): ?>
+								<option value="<?php echo $category['ID']; ?>"><?php echo $category['name']; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -38,6 +38,9 @@
     padding-left: 0; }
     .la-calendar-wrapper ul#event_category li {
       padding-left: 20px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      margin-bottom: 20px;
       cursor: pointer; }
       .la-calendar-wrapper ul#event_category li::before {
         display: none; }
