@@ -14,6 +14,7 @@ class LA_Events_ACF {
 	const EVENT_END_DATE_FIELD = 'la_event_end_date';
 	const EVENT_END_DATE_TIME_FIELD = 'la_event_end_date_time';
 	const EVENT_ALL_DAY_FIELD = 'la_event_allday';
+	const EVENT_GENERAL_DATE = 'la_event_general_date';
 
 	/**
 	 * Initialization

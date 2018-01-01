@@ -38,6 +38,10 @@ Major shortcode to show events calendar.
 
 ## Changelog
 
+**1.0.7**
+
+- added general date format to fetch events for mobile view in right order
+
 **1.0.6**
 
 - completely changed mobile layout

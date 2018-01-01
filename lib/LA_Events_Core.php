@@ -12,12 +12,13 @@ class LA_Events_Core {
 	const EVENT_POST_TYPE_CATEGORY = 'la-event-category';
 	const TEXT_DOMAIN = 'la-events-calendar';
 	const DEFAULT_EVENT_CATEGORY_COLOR = '#EFEFEF';
-	const DEFAULT_EVENT_PER_PAGE = 1;
+	const DEFAULT_EVENT_PER_PAGE = 10;
 
 	/**
 	 * Initialization
 	 *
-	 * @since 1.6.0 Added wp_footer action
+	 * @since 1.0.6 Added wp_footer action
+	 * @since 1.0.7 Added save_post action
 	 */
 	public static function init() {
 
@@ -25,6 +26,7 @@ class LA_Events_Core {
 		add_action('init', array(__CLASS__, 'registerTaxonomies'));
 		add_action('plugins_loaded', array(__CLASS__, 'loadTextDomain'));
 		add_action('wp_footer', array(__CLASS__, 'wpFooter'));
+		add_action('save_post', array(__CLASS__, 'saveDateOnPostSave'));
 
 	}
 
@@ -130,6 +132,38 @@ class LA_Events_Core {
 		$translationsDir = LA_EVENTS_PATH . 'i18n';
 
 		load_plugin_textdomain(self::TEXT_DOMAIN, FALSE, $translationsDir);
+	}
+
+	/**
+	 * Save general date parameter into database when post is saved
+	 *
+	 * @param int $postId Post ID
+	 *
+	 * @return bool False if Post ID is zero
+	 *
+	 * @since 1.0.7
+	 */
+	public static function saveDateOnPostSave($postId = 0) {
+
+		$postId = intval($postId);
+
+		if ($postId === 0) {
+			return FALSE;
+		}
+
+		$isEventAllDay = get_field(LA_Events_ACF::EVENT_ALL_DAY_FIELD, $postId);
+
+		if ($isEventAllDay) {
+			$eventGeneralDate = get_field(LA_Events_ACF::EVENT_START_DATE_FIELD, $postId);
+		} else {
+			$eventGeneralDate = get_field(LA_Events_ACF::EVENT_START_DATE_TIME_FIELD, $postId);
+		}
+
+		$eventGeneralDateFormatted = new DateTime($eventGeneralDate);
+		$eventGeneralDateValue = $eventGeneralDateFormatted->format('Ymd');
+
+		update_post_meta($postId, LA_Events_ACF::EVENT_GENERAL_DATE, $eventGeneralDateValue);
+
 	}
 
 	/**

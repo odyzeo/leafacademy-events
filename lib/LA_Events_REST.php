@@ -63,37 +63,17 @@ class LA_Events_REST {
 
 		$metaQuery = array(
 
-			'relation' => 'OR',
 			array(
-				'relation' => 'OR',
 				array(
-					'key' => LA_Events_ACF::EVENT_START_DATE_FIELD,
+					'key' => LA_Events_ACF::EVENT_GENERAL_DATE,
 					'value' => $today,
 					'compare' => '>=',
-				),
-				array(
-					'key' => LA_Events_ACF::EVENT_END_DATE_FIELD,
-					'value' => $today,
-					'compare' => '<',
-				)
-			),
-			array(
-				'relation' => 'OR',
-				'datetime' => array(
-					'key' => LA_Events_ACF::EVENT_START_DATE_TIME_FIELD,
-					'value' => $today,
-					'compare' => '>=',
-				),
-				'date' => array(
-					'key' => LA_Events_ACF::EVENT_END_DATE_TIME_FIELD,
-					'value' => $today,
-					'compare' => '<',
 				)
 			)
 		);
 
-		$events = LA_Events_Helper::getEventsFromWPQuery($metaQuery, $taxQuery, TRUE, $page, $perPage);
-		$eventsCounted = (intval(LA_Events_Helper::getEventsFromWPQuery($metaQuery, $taxQuery, TRUE, $page, $perPage, TRUE)) / LA_Events_Core::DEFAULT_EVENT_PER_PAGE);
+		$events = LA_Events_Helper::getEventsFromWPQuery($metaQuery, $taxQuery, TRUE, $page, $perPage, FALSE, TRUE);
+		$eventsCounted = (intval(LA_Events_Helper::getEventsFromWPQuery($metaQuery, $taxQuery, TRUE, $page, $perPage, TRUE, TRUE)) / LA_Events_Core::DEFAULT_EVENT_PER_PAGE);
 		$eventsObject = LA_Events_Helper::buildEventsObject($events);
 
 		return array(

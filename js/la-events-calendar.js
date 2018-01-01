@@ -95,7 +95,9 @@ jQuery.noConflict();
 
 				$(selector).change(function() {
 
-					var categoryField = $('select[name="event_category"]');
+					var categoryField = $('.mobile-view select[name="event_category"]');
+
+					console.log(categoryField);
 
 					updateHelperForm('page', 0);
 					updateHelperForm('category', categoryField.find(":selected").val());

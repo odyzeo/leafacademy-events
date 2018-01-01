@@ -16,13 +16,15 @@ class LA_Events_Helper {
 	 * @param int $page Current page to load
 	 * @param int $perPage Posts per page
 	 * @param bool $countOnly Return only counted posts
+	 * @param bool $orderByAcf Order by ACF Date field
 	 *
 	 * @return array Array of WP_Post objects
 	 *
 	 * @since 1.0.6 Added pagination parameters
-	 *                Added count only parameter
+	 *              Added count only parameter
+	 * @since 1.0.7 Added possibility to order by ACF Date field
 	 */
-	public static function getEventsFromWPQuery($metaQuery = array(), $taxQuery = array(), $pagination = FALSE, $page = 0, $perPage = 0, $countOnly = FALSE) {
+	public static function getEventsFromWPQuery($metaQuery = array(), $taxQuery = array(), $pagination = FALSE, $page = 0, $perPage = 0, $countOnly = FALSE, $orderByAcf = FALSE) {
 
 		$queryArgs = array(
 			'post_type' => LA_Events_Core::EVENT_POST_TYPE
@@ -39,6 +41,12 @@ class LA_Events_Helper {
 		if ($pagination) {
 			$queryArgs['paged'] = $page;
 			$queryArgs['posts_per_page'] = $perPage;
+		}
+
+		if ($orderByAcf) {
+			$queryArgs['meta_key'] = LA_Events_ACF::EVENT_GENERAL_DATE;
+			$queryArgs['orderby'] = 'meta_value_num';
+			$queryArgs['order'] = 'ASC';
 		}
 
 		$queryPosts = new WP_Query($queryArgs);
@@ -71,52 +79,54 @@ class LA_Events_Helper {
 
 		$eventsObject = array();
 
-		foreach ($posts as $post) {
+		if (!empty($posts)) {
+			foreach ($posts as $post) {
 
-			$eventId = $post->ID;
-			$eventDate = get_field(LA_Events_ACF::EVENT_START_DATE_TIME_FIELD, $eventId);
-			$eventEndDate = get_field(LA_Events_ACF::EVENT_END_DATE_TIME_FIELD, $eventId);
-			$eventAllDay = get_field(LA_Events_ACF::EVENT_ALL_DAY_FIELD, $eventId);
+				$eventId = $post->ID;
+				$eventDate = get_field(LA_Events_ACF::EVENT_START_DATE_TIME_FIELD, $eventId);
+				$eventEndDate = get_field(LA_Events_ACF::EVENT_END_DATE_TIME_FIELD, $eventId);
+				$eventAllDay = get_field(LA_Events_ACF::EVENT_ALL_DAY_FIELD, $eventId);
 
-			$eventCategory = wp_get_post_terms($eventId, LA_Events_Core::EVENT_POST_TYPE_CATEGORY)[0];
-			$eventCategoryColor = LA_Events_Core::DEFAULT_EVENT_CATEGORY_COLOR;
-			$eventCategoryId = $eventCategory->term_id;
+				$eventCategory = wp_get_post_terms($eventId, LA_Events_Core::EVENT_POST_TYPE_CATEGORY)[0];
+				$eventCategoryColor = LA_Events_Core::DEFAULT_EVENT_CATEGORY_COLOR;
+				$eventCategoryId = $eventCategory->term_id;
 
-			if ($eventAllDay) {
-				$eventDate = get_field(LA_Events_ACF::EVENT_START_DATE_FIELD, $eventId);
-				$eventEndDate = get_field(LA_Events_ACF::EVENT_END_DATE_FIELD, $eventId);
+				if ($eventAllDay) {
+					$eventDate = get_field(LA_Events_ACF::EVENT_START_DATE_FIELD, $eventId);
+					$eventEndDate = get_field(LA_Events_ACF::EVENT_END_DATE_FIELD, $eventId);
+				}
+
+				$formattedStartDate = date_format(date_create($eventDate), 'd.M');
+				$formattedStartTime = date_format(date_create($eventDate), 'G:i');
+				$formattedEndDate = date_format(date_create($eventEndDate), 'd.M');
+				$formattedEndTime = date_format(date_create($eventEndDate), 'G:i');
+
+				$categoryTermColor = get_term_meta($eventCategoryId, 'color', TRUE);
+
+				if (!empty($categoryTermColor)) {
+					$eventCategoryColor = get_term_meta($eventCategoryId, 'color', TRUE);
+				}
+
+				array_push($eventsObject, array(
+					'ID' => $eventId,
+					'title' => $post->post_title,
+					'content' => $post->post_content,
+					'event_date' => $eventDate,
+					'event_end_date' => $eventEndDate,
+					'all_day' => $eventAllDay,
+					'date_object' => array(
+						'start_date' => $formattedStartDate,
+						'start_time' => $formattedStartTime,
+						'end_date' => $formattedEndDate,
+						'end_time' => $formattedEndTime
+					),
+					'category' => array(
+						'id' => $eventCategoryId,
+						'name' => $eventCategory->name,
+						'color' => $eventCategoryColor
+					)
+				));
 			}
-
-			$formattedStartDate = date_format(date_create($eventDate), 'd.M');
-			$formattedStartTime = date_format(date_create($eventDate), 'G:i');
-			$formattedEndDate = date_format(date_create($eventEndDate), 'd.M');
-			$formattedEndTime = date_format(date_create($eventEndDate), 'G:i');
-
-			$categoryTermColor = get_term_meta($eventCategoryId, 'color', TRUE);
-
-			if (!empty($categoryTermColor)) {
-				$eventCategoryColor = get_term_meta($eventCategoryId, 'color', TRUE);
-			}
-
-			array_push($eventsObject, array(
-				'ID' => $eventId,
-				'title' => $post->post_title,
-				'content' => $post->post_content,
-				'event_date' => $eventDate,
-				'event_end_date' => $eventEndDate,
-				'all_day' => $eventAllDay,
-				'date_object' => array(
-					'start_date' => $formattedStartDate,
-					'start_time' => $formattedStartTime,
-					'end_date' => $formattedEndDate,
-					'end_time' => $formattedEndTime
-				),
-				'category' => array(
-					'id' => $eventCategoryId,
-					'name' => $eventCategory->name,
-					'color' => $eventCategoryColor
-				)
-			));
 		}
 
 		return $eventsObject;

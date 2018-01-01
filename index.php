@@ -4,7 +4,7 @@
  * Plugin Name: Events Calendar
  * Plugin URI: http://www.devstudio.sk
  * Description: Events calendar for Leaf Academy.
- * Version: 1.0.6
+ * Version: 1.0.7
  * Author: Dev Studio spol. s r.o.
  * Author URI: http://www.devstudio.sk
  * Text Domain: la-events-calendar

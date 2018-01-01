@@ -104,6 +104,11 @@ select[name="event_category"] {
 .la-events-listing {
 
 	margin: 26px;
+	display: none;
+
+	@media screen and (max-width: $small-size) {
+		display: block;
+	}
 
 	.listing {
 

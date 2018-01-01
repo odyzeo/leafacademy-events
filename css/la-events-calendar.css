@@ -59,7 +59,11 @@ select[name="event_category"] {
       width: 100%; } }
 
 .la-events-listing {
-  margin: 26px; }
+  margin: 26px;
+  display: none; }
+  @media screen and (max-width: 768px) {
+    .la-events-listing {
+      display: block; } }
   .la-events-listing .listing {
     min-height: 120px;
     border-top: 1px solid #ddd; }
