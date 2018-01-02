@@ -96,15 +96,18 @@ class LA_Events_Helper {
 					$eventEndDate = get_field(LA_Events_ACF::EVENT_END_DATE_FIELD, $eventId);
 				}
 
-				$formattedStartDate = date_format(date_create($eventDate), 'd.M');
-				$formattedStartTime = date_format(date_create($eventDate), 'G:i');
-				$formattedEndDate = date_format(date_create($eventEndDate), 'd.M');
-				$formattedEndTime = date_format(date_create($eventEndDate), 'G:i');
+				$startDate = date_create($eventDate);
+				$endDate = date_create($eventEndDate);
+				
+				$formattedStartDate = date_format($startDate, 'd M');
+				$formattedStartTime = date_format($startDate, 'H:i');
+				$formattedEndDate = date_format($endDate, 'd M');
+				$formattedEndTime = date_format($endDate, 'H:i');
 
 				$label = $formattedStartDate . ' ' . $formattedStartTime . ' - ' . $formattedEndDate . ' ' . $formattedEndTime;
 				if ($eventAllDay) {
 
-					$diff = date_diff($eventDate, $eventEndDate);
+					$diff = date_diff($startDate, $endDate);
 					if ($diff->format('%a') === '0') {
 
 						$label = $formattedStartDate;
@@ -114,7 +117,7 @@ class LA_Events_Helper {
 					}
 				} else {
 
-					$diff = date_diff($eventDate, $eventEndDate);
+					$diff = date_diff($startDate, $endDate);
 					if ($diff->format('%a') === '0') {
 
 						$label = $formattedStartDate . ' ' . $formattedStartTime . ' - ' . $formattedEndTime;
