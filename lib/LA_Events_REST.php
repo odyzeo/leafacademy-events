@@ -62,7 +62,6 @@ class LA_Events_REST {
 		$today = current_time('Ymd');
 
 		$metaQuery = array(
-
 			array(
 				array(
 					'key' => LA_Events_ACF::EVENT_GENERAL_DATE,
@@ -115,7 +114,6 @@ class LA_Events_REST {
 		}
 
 		$metaQuery = array(
-
 			'relation' => 'OR',
 			array(
 				'relation' => 'AND',

@@ -56,3 +56,5 @@ fabric.properties
 /js/moment-with-locales.min.js
 /images/loading.gif
 /dist/
+/js/handlebars.min.js
+/js/handlebars.runtime.min.js

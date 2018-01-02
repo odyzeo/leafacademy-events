@@ -97,8 +97,6 @@ jQuery.noConflict();
 
 					var categoryField = $('.mobile-view select[name="event_category"]');
 
-					console.log(categoryField);
-
 					updateHelperForm('page', 0);
 					updateHelperForm('category', categoryField.find(":selected").val());
 					updateViewInformations(calendar);
@@ -274,8 +272,6 @@ jQuery.noConflict();
 				var element = $(selector);
 
 				element.on('click', function() {
-
-					console.log('clicked');
 					callMobileRestApiEndpoint(LA_Events.mobile_rest_url, false);
 				});
 

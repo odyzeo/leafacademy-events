@@ -11,7 +11,7 @@ class LA_Events_Core {
 	const EVENT_POST_TYPE = 'la-event';
 	const EVENT_POST_TYPE_CATEGORY = 'la-event-category';
 	const TEXT_DOMAIN = 'la-events-calendar';
-	const DEFAULT_EVENT_CATEGORY_COLOR = '#EFEFEF';
+	const DEFAULT_EVENT_CATEGORY_COLOR = '#76787a';
 	const DEFAULT_EVENT_PER_PAGE = 10;
 
 	/**
@@ -26,7 +26,7 @@ class LA_Events_Core {
 		add_action('init', array(__CLASS__, 'registerTaxonomies'));
 		add_action('plugins_loaded', array(__CLASS__, 'loadTextDomain'));
 		add_action('wp_footer', array(__CLASS__, 'wpFooter'));
-		add_action('save_post', array(__CLASS__, 'saveDateOnPostSave'));
+		add_action('save_post', array(__CLASS__, 'saveDateOnPostSave'), 10, 1);
 
 	}
 
@@ -181,11 +181,7 @@ class LA_Events_Core {
 					<div class="col-xs-12 heading">
 						<div class="row">
 							<div class="col-xs-9 date">
-								{{#if all_day}}
-								{{date_object.start_date}} - {{date_object.end_date}}
-								{{else}}
-								{{date_object.start_date}} {{date_object.start_time}} - {{date_object.end_date}} {{date_object.end_time}}
-								{{/if}}
+								{{label}}
 							</div>
 							<div class="col-xs-3 extra">
 								{{#if all_day}}

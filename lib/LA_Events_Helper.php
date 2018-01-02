@@ -101,6 +101,26 @@ class LA_Events_Helper {
 				$formattedEndDate = date_format(date_create($eventEndDate), 'd.M');
 				$formattedEndTime = date_format(date_create($eventEndDate), 'G:i');
 
+				$label = $formattedStartDate . ' ' . $formattedStartTime . ' - ' . $formattedEndDate . ' ' . $formattedEndTime;
+				if ($eventAllDay) {
+
+					$diff = date_diff($eventDate, $eventEndDate);
+					if ($diff->format('%a') === '0') {
+
+						$label = $formattedStartDate;
+					} else {
+
+						$label = $formattedStartDate . ' - ' . $formattedEndDate;
+					}
+				} else {
+
+					$diff = date_diff($eventDate, $eventEndDate);
+					if ($diff->format('%a') === '0') {
+
+						$label = $formattedStartDate . ' ' . $formattedStartTime . ' - ' . $formattedEndTime;
+					}
+				}
+
 				$categoryTermColor = get_term_meta($eventCategoryId, 'color', TRUE);
 
 				if (!empty($categoryTermColor)) {
@@ -114,6 +134,7 @@ class LA_Events_Helper {
 					'event_date' => $eventDate,
 					'event_end_date' => $eventEndDate,
 					'all_day' => $eventAllDay,
+					'label' => $label,
 					'date_object' => array(
 						'start_date' => $formattedStartDate,
 						'start_time' => $formattedStartTime,
@@ -191,7 +212,6 @@ class LA_Events_Helper {
 					'content' => $eventObject['content']
 				)
 			));
-
 		}
 
 		return $calendarObject;
@@ -235,6 +255,7 @@ class LA_Events_Helper {
 		}
 
 		return $categoriesObject;
+
 	}
 
 }
