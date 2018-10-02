@@ -58,3 +58,4 @@ fabric.properties
 /dist/
 /js/handlebars.min.js
 /js/handlebars.runtime.min.js
+/packaged/
